@@ -1,28 +1,24 @@
 const Book = require('../models/books')
-const {NOT_FOUND} = require('http-errors')
+const {NotFound} = require('http-errors')
+const asyncHandler = require('../middlewares/async')
 
-async function createBook (req, res, next)  {
-    try {
-        const book = new Book(req.body)
-        const newBook = await book.save()
-        res.status(201).json({
-            success:true, 
-            data: newBook
-        })
-    }catch(e){
-        next(e)
-    }
-}
+const createBook = asyncHandler(async (req, res, next) => {
+    const book = new Book(req.body)
+    const newBook = await book.save()
+    res.status(201).json({
+        success:true, 
+        data: newBook
+    })
+})
 
 async function getBooks(req, res, next) {
     try{
-        const book = await Book.find()
+        const book = await Book.find({})
         res.status(200).json({
             success:true,
             data: book,
             count: book.length
         })
-        
     }catch(e){
         next(e)
     }
@@ -31,9 +27,10 @@ async function getBooks(req, res, next) {
 
 async function getOneBook (req, res, next) {
     try{
+        await Book.findOne({_id:req.params.id})
         const book = await Book.findById(req.params.id)
         if (!book){
-            throw new Error('no book with id found')
+            throw new NotFound('no book with id found')
         }
         res.status(200).json({
             success: true, 
@@ -46,10 +43,16 @@ async function getOneBook (req, res, next) {
 
 async function updateBook(req, res, next) {
     try{
-       const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body)
+       const existingBook = await Book.findById(req.params.id)
+       if(!existingBook) {
+        throw new NotFound('no book with id exist')
+       }
+       const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+       })
        res.status(200).json({
            success:true,
-           data: {}
+           data: book
        })
 
     }catch(e){

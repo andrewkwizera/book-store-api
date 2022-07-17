@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const slugify = require('slugify')
 
 
 const BookSchema = new mongoose.Schema({
@@ -20,8 +21,19 @@ const BookSchema = new mongoose.Schema({
 
     category: {
         type: String 
-    }
+    },
 
+    slug: String
+}, {
+    timestamps: true
+})
+
+BookSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, {
+        lower:true
+    })
+    console.log(this)
+    next()
 })
 
 

@@ -1,9 +1,16 @@
+const {BadRequest} = require('http-errors')
 const errorHandler =  (err, req, res, next) => {
-    console.log('error midddleware called')
-    // console.log(err.message)
-    res.status(500).json({
+    console.log(err)
+
+    let error = Object.assign(err, {})
+
+    if(err.name === 'CastError') {
+        error = new BadRequest('invalid object id provided')
+    }
+
+    res.status(error.statusCode || 500).json({
         success: false, 
-        message: err.message
+        message: error.message
     })
 
 }
