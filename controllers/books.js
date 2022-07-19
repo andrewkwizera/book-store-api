@@ -1,5 +1,5 @@
 const Book = require('../models/books')
-const {NotFound} = require('http-errors')
+const {NotFound, BadRequest} = require('http-errors')
 const asyncHandler = require('../middlewares/async')
 
 const createBook = asyncHandler(async (req, res, next) => {
@@ -27,6 +27,9 @@ async function getBooks(req, res, next) {
 
 async function getOneBook (req, res, next) {
     try{
+        if(!req.params.id) {
+            throw new BadRequest('no id provided')
+        }
         await Book.findOne({_id:req.params.id})
         const book = await Book.findById(req.params.id)
         if (!book){
@@ -43,6 +46,9 @@ async function getOneBook (req, res, next) {
 
 async function updateBook(req, res, next) {
     try{
+        if(!req.params.id) {
+            throw new BadRequest('id must be provided!')
+        }
        const existingBook = await Book.findById(req.params.id)
        if(!existingBook) {
         throw new NotFound('no book with id exist')
