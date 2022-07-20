@@ -9,18 +9,35 @@ const BookSchema = new mongoose.Schema({
     }, 
 
     author: {
-        type: String, 
+        type: [String], 
         required: [true, 'author name must be provided']
     }, 
 
-    ISBN: {
+    isbn: {
         type:String,
-        length: 13,
         required: true
     }, 
 
     category: {
-        type: String 
+        type: [String]
+    },
+
+    copies: {
+        type: Number,
+        default: 1
+    }, 
+
+    edition: {
+        type: Number,
+        default: 1
+    },
+    
+    publisher: {
+        type: String
+    },
+
+    metadata: {
+        type: mongoose.Schema.Types.Mixed
     },
 
     slug: String
