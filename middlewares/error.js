@@ -7,6 +7,7 @@ const errorHandler =  (err, req, res, next) => {
     if(err.name === 'CastError') {
         error = new BadRequest('invalid object id provided')
     }
+    
 
     res.status(error.statusCode || 500).json({
         success: false, 
