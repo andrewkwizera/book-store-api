@@ -6,8 +6,10 @@ const validateCreateBook = async (req, res, next) => {
         const createBookSchema = Joi.object({
             name: Joi.string().required(),
             author: Joi.string().required(),
-            ISBN: Joi.number().required(),
-            category: Joi.string().required() 
+            isbn: Joi.number().required(),
+            category: Joi.string().required(),
+            copies:Joi.string(),
+            publisher: Joi.string()
         })
        await  createBookSchema.validateAsync(req.body)
        next()

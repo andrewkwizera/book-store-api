@@ -5,19 +5,75 @@ const asyncHandler = require('../middlewares/async')
 const createBook = asyncHandler(async (req, res, next) => {
     const book = new Book(req.body)
     const newBook = await book.save()
+    
     res.status(201).json({
         success:true, 
         data: newBook
     })
 })
 
-async function getBooks(req, res, next) {
+async function getAllBooks(req, res, next) {
     try{
-        const book = await Book.find({})
+        console.log(req.query)
+        let query 
+
+        //creates a copy of req.query
+        let reqQuery = {...req.query}
+
+        //create a list of fields to exclude from the query
+        let excludeFields = ['select', 'sort', 'page', 'limit']
+
+        excludeFields.map(field => delete reqQuery[field])
+
+        //creates query string 
+        let queryStr = JSON.stringify(reqQuery)
+
+        //create mongodb operators
+        queryStr = queryStr.replace(/\b(gt|gte|lt|lte|eq|in)\b/g, match => `$${match}`)
+        query = Book.find()
+
+        //selects fieds
+        if (req.query.select){
+           const fields = req.query.select.split(',').join(' ')
+           query = query.select(fields)
+        }
+
+        //sorts fields
+        if (req.query.sort){
+            const sortBy = req.query.sort
+            query = query.sort(sortBy)
+         }
+
+        const page = parseInt(req.query.page, 10) || 1
+        const limit = parseInt(req.query.limit, 10) || 10
+        const startIndex = (page - 1) * limit
+        const endIndex =  page * limit 
+        const total = await Book.countDocuments()
+
+        query.limit(limit).skip(startIndex)
+
+        const book = await query
+
+        const pagination = {}
+        
+        if(endIndex < total) {
+            pagination.next = {
+                page: page + 1,
+                limit
+            }
+        }
+        if(startIndex > 0) {
+            pagination.prev = {
+                page: page - 1,
+                limit
+            }
+        }
         res.status(200).json({
             success:true,
+            count: book.length,
+            pagination,
             data: book,
-            count: book.length
+            
         })
     }catch(e){
         next(e)
@@ -84,7 +140,7 @@ async function deleteBook(req, res, next) {
 
 module.exports = {
     createBook,
-    getBooks,
+    getAllBooks,
     getOneBook,
     updateBook,
     deleteBook

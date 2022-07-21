@@ -3,10 +3,17 @@ const slugify = require('slugify')
 
 
 const BookSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String, 
+        trim: true,
         required: [true, 'book name must be provided']
-    }, 
+    },
+
+    available: {
+        type: Boolean, 
+        default: true
+
+    },
 
     author: {
         type: [String], 
@@ -22,10 +29,15 @@ const BookSchema = new mongoose.Schema({
         type: [String]
     },
 
-    copies: {
+    initialCopies: {
         type: Number,
         default: 1
     }, 
+
+    currentCopies : {
+        type: Number,
+        default: 1
+    },
 
     edition: {
         type: Number,
@@ -35,6 +47,10 @@ const BookSchema = new mongoose.Schema({
     publisher: {
         type: String
     },
+
+    language: String,
+
+    coverPage: String,
 
     metadata: {
         type: mongoose.Schema.Types.Mixed
