@@ -56,6 +56,11 @@ const BookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed
     },
 
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+
     slug: String
 }, {
     timestamps: true

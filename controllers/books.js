@@ -5,7 +5,6 @@ const asyncHandler = require('../middlewares/async')
 const createBook = asyncHandler(async (req, res, next) => {
     const book = new Book(req.body)
     const newBook = await book.save()
-    
     res.status(201).json({
         success:true, 
         data: newBook
