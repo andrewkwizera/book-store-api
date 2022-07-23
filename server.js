@@ -5,12 +5,14 @@ const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/error')
 
 const bookRouter = require('./routes/books')
+const userRouter = require('./routes/user')
 
 const app = express()
 
 app.use(express.json())
 
 app.use('/api/v1/books', bookRouter)
+app.use('/api/v1/user', userRouter)
 
 app.use(errorHandler)
 
