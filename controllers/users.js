@@ -22,6 +22,11 @@ const login = asyncHandler(async (req, res, next) => {
     if(!user) throw new NotFound('no user with this email exists')
     const valid = await bcrypt.compare(password, user.password)
     if(!valid) throw new BadRequest('invalid password')
+    const sessionData =  {
+        id: user._id,
+        authenticated: true
+    }
+    req.session.user = sessionData
     res.status(200).json({
         success:true,
         data:user
@@ -32,6 +37,10 @@ const login = asyncHandler(async (req, res, next) => {
 
 
 const getUser = asyncHandler(async (req, res, next) => {
+    await User.findOne({_id:req.session.user.id})
+    // req.session.visits = req.session.visits ? req.session.visits + 1 : 1;
+    console.log(req.session)
+    res.status(200).send({})
 })
 
 
@@ -49,5 +58,6 @@ const getUsers = asyncHandler(async (req, res, next) => {
 module.exports = {
    register,
    login,
+   getUser,
     getUsers
 }
