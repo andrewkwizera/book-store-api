@@ -13,16 +13,16 @@ const userRouter = require('./routes/users')
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
-app.use(session({
-    secret: 'my-secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 10 * 10000,
-      httpOnly:false
-    }
-  }),)
+// app.use(cookieParser());
+// app.use(session({
+//     secret: 'my-secret',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 10 * 10000,
+//       httpOnly:false
+//     }
+//   }),)
 
 app.use(responseDuration)
 app.use('/api/v1/books', bookRouter)
