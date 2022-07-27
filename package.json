@@ -27,6 +27,7 @@
     "http-errors": "^2.0.0",
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.4",
     "slugify": "^1.6.5",
     "validator": "^13.7.0"
