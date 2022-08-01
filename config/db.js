@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-require("dotenv").config();
+const config = require('./index')
 
 function connectToDb() {
   mongoose
-    .connect(process.env.MONGO_URI)
+    .connect(config.mongoUri)
     .then((connection) => {
       console.log("connected to database");
     })
