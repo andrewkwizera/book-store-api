@@ -7,22 +7,33 @@ switch (process.env.NODE_ENV) {
         config = {
             port: process.env.PORT || 3000,
             mongoUri:process.env.MONGO_URI, 
-            sendgridApiKey:process.env.SENDGRID_API_KEY, 
-            env:  process.env.NODE_ENV
+            env:  process.env.NODE_ENV, 
+            smtpHost: process.env.SMTP_HOST, 
+            smtpPort: process.env.SMTP_PORT, 
+            smtpUser: process.env.SMTP_USER,
+            smtpPass: process.env.SMTP_PASS
+
+
         }
     case 'development':
         config = {
             port: 5000, 
             mongoUri: 'mongodb://localhost:27017/test', 
-            sendgridApiKey:process.env.SENDGRID_API_KEY, 
-            env:  process.env.NODE_ENV
+            env:  process.env.NODE_ENV,
+            smtpHost: process.env.SMTP_HOST, 
+            smtpPort: process.env.SMTP_PORT, 
+            smtpUser: process.env.SMTP_USER,
+            smtpPass: process.env.SMTP_PASS
         }
     default:
         config = {
             port: 5000, 
             mongoUri: 'mongodb://localhost:27017/test',
-            sendgridApiKey:process.env.SENDGRID_API_KEY, 
-            env:  process.env.NODE_ENV
+            env:  process.env.NODE_ENV, 
+            smtpHost: process.env.SMTP_HOST, 
+            smtpPort: process.env.SMTP_PORT, 
+            smtpUser: process.env.SMTP_USER,
+            smtpPass: process.env.SMTP_PASS
 
         }
 }

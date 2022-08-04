@@ -4,13 +4,16 @@ const User = require('../models/users')
 const Wallet = require('../models/wallet')
 const {NotFound, BadRequest, Unauthorized} = require('http-errors')
 const asyncHandler = require('../middlewares/async')
+const {createUserActivationToken} = require('../services/auth')
+const {sendUserActivationEmail} = require('../services/mail')
 
 const register = asyncHandler(async (req, res, next) => {
     const existingUser = await User.findOne({email:req.body.email})
     if(existingUser) throw new BadRequest('a user with this email already exists')
     const user = new User(req.body)
     await user.save()
-    //send 
+    const activationToken = await createUserActivationToken(user)
+    await sendUserActivationEmail(activationToken, user)
     res.status(201).json({
         success:true,
         data:user

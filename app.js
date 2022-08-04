@@ -1,25 +1,35 @@
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require('connect-mongo')
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const morgan = require('morgan')
 
 
 const config = require('./config/index')
-const { connectToDb } = require("./config/db");
+const { connectToDb } = require("./db/mongo");
 const errorHandler = require("./middlewares/error");
-const responseDuration = require("./middlewares/responseDuration");
 
 const bookRouter = require("./routes/books");
 const userRouter = require("./routes/users");
 const app = express();
 
 app.use(express.json());
+// app.use(morgan('combined'))
 
+/* loads open API spec yaml files */
+const swaggerDocument = YAML.load('api.yaml')
 const store = MongoStore.create({
   mongoUrl: "mongodb://localhost:27017",
   dbName:'session',
   ttl: 24 * 60 * 60,
   stringify: false,
 });
+
+/* sets ups swagger */
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+
 connectToDb();
 
 
@@ -43,7 +53,6 @@ app.use(
   })
 );
 
-app.use(responseDuration);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/users", userRouter);
 
