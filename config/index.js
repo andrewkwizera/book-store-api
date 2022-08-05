@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 let config 
-// console.log(process.env);
+
 switch (process.env.NODE_ENV) {
     case 'production':
         config = {
@@ -10,30 +10,32 @@ switch (process.env.NODE_ENV) {
             env:  process.env.NODE_ENV, 
             smtpHost: process.env.SMTP_HOST, 
             smtpPort: process.env.SMTP_PORT, 
-            smtpUser: process.env.SMTP_USER,
-            smtpPass: process.env.SMTP_PASS
-
+            smtpUser: process.env.MAILJET_API_KEY,
+            smtpPass: process.env.MAILJET_API_SECRET,
+            host: `${process.env.HOST}:${this.port}`
 
         }
     case 'development':
         config = {
             port: 5000, 
-            mongoUri: 'mongodb://localhost:27017/test', 
+            mongoUri: process.env.MONGO_URI, 
             env:  process.env.NODE_ENV,
             smtpHost: process.env.SMTP_HOST, 
             smtpPort: process.env.SMTP_PORT, 
-            smtpUser: process.env.SMTP_USER,
-            smtpPass: process.env.SMTP_PASS
+            smtpUser: process.env.MAILJET_API_KEY,
+            smtpPass: process.env.MAILJET_API_SECRET,
+            host: `http://localhost:${this.port}`
         }
     default:
         config = {
             port: 5000, 
-            mongoUri: 'mongodb://localhost:27017/test',
+            mongoUri: process.env.MONGO_URI,
             env:  process.env.NODE_ENV, 
             smtpHost: process.env.SMTP_HOST, 
             smtpPort: process.env.SMTP_PORT, 
-            smtpUser: process.env.SMTP_USER,
-            smtpPass: process.env.SMTP_PASS
+            smtpUser: process.env.MAILJET_API_KEY,
+            smtpPass: process.env.MAILJET_API_SECRET,
+            host: `http://localhost:${this.port}`
 
         }
 }

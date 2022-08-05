@@ -1,55 +1,45 @@
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require('connect-mongo')
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const morgan = require('morgan')
+let RedisStore = require("connect-redis")(session)
 
 
 const config = require('./config/index')
-const { connectToDb } = require("./db/mongo");
+const { connectMongo } = require("./db/mongo");
+const {connectRedis} = require('./db/redis')
 const errorHandler = require("./middlewares/error");
 
 const bookRouter = require("./routes/books");
 const userRouter = require("./routes/users");
+/** These route conatins the health routes */
+const baseRouter = require('./routes/base')
 const app = express();
 
 app.use(express.json());
-// app.use(morgan('combined'))
+app.use(morgan('combined'))
 
 /* loads open API spec yaml files */
 const swaggerDocument = YAML.load('api.yaml')
-const store = MongoStore.create({
-  mongoUrl: "mongodb://localhost:27017",
-  dbName:'session',
-  ttl: 24 * 60 * 60,
-  stringify: false,
-});
+
 
 /* sets ups swagger */
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
-connectToDb();
+connectMongo();
+const redisClient = connectRedis()
+redisClient.connect().then().catch(console.error)
 
 
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: "server running",
-  });
-});
 
 app.use(
   session({
     secret: "my-secret",
-    store:store,
+    store: new RedisStore({ client: redisClient }),
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 10 * 10000,
-      httpOnly: true,
-    },
   })
 );
 

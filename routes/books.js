@@ -4,7 +4,7 @@ const {validateCreateBook} = require('../middlewares/validate')
 const router = express.Router({mergeParams:true});
 
 
-// app.use(':/bookId/reviews')
+// ap p.use(':/bookId/reviews')
 
 
 router.route('/:id').get(getOneBook).patch(updateBook).delete(deleteBook)

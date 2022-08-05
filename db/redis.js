@@ -1,9 +1,14 @@
 const { createClient } = require('redis');
 
-const client = createClient();
+const connectRedis = () => {
+    const client = createClient({legacyMode:true});
+    client.on('error', (err) => console.log('Redis Client Error', err));
+    client.on('connect', () => console.log('connected to redis'))
+    return client
+}
 
-client.on('error', (err) => console.log('Redis Client Error', err));
 
-await client.connect();
 
-module.exports = client
+module.exports = {
+    connectRedis
+}
