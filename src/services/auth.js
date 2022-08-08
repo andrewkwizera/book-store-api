@@ -1,7 +1,7 @@
 const {nanoid} = require("nanoid");
 const {BadRequest} = require('http-errors');
 const {connectRedis} = require('../db/redis');
-const logger = require("../utils/logger");
+const logger = require("../config/logger");
 const redisClient = connectRedis()
 
 redisClient.connect().then().catch(console.error)

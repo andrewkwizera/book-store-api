@@ -1,7 +1,7 @@
 const { Unauthorized } = require("http-errors");
 
 const asyncHandler = require("./async");
-const User = require("../models/users");
+const User = require("../../models/users");
 
 // Protect routes
 const authenticate = async (req, res, next) => {

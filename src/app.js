@@ -9,12 +9,12 @@ let RedisStore = require("connect-redis")(session)
 const config = require('./config/index')
 const { connectMongo } = require("./db/mongo");
 const {connectRedis} = require('./db/redis')
-const errorHandler = require("./middlewares/error");
+const errorHandler = require("./api/middlewares/error");
 
-const bookRouter = require("./routes/books");
-const userRouter = require("./routes/users");
+const bookRouter = require("./api/routes/books");
+const userRouter = require("./api/routes/users");
 /** These route conatins the health routes */
-const baseRouter = require('./routes/base')
+const baseRouter = require('./api/routes/base')
 const app = express();
 
 app.use(express.json());

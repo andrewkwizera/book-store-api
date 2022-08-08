@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
-const logger = require('../utils/logger')
+const logger = require('../../config/logger')
 
-const User = require('../models/users')
-const Wallet = require('../models/wallet')
+const User = require('../../models/users')
+const Wallet = require('../../models/wallet')
 const {NotFound, BadRequest, Unauthorized} = require('http-errors')
 const asyncHandler = require('../middlewares/async')
-const {createUserActivationToken, checkUserActivationToken, createUserResetToken, checkUserResetToken} = require('../services/auth')
-const {sendUserActivationEmail, sendUserPasswordResetEmail} = require('../services/mail')
+const {createUserActivationToken, checkUserActivationToken, createUserResetToken, checkUserResetToken} = require('../../services/auth')
+const {sendUserActivationEmail, sendUserPasswordResetEmail} = require('../../services/mail')
 
 const register = asyncHandler(async (req, res, next) => {
     const existingUser = await User.findOne({email:req.body.email})

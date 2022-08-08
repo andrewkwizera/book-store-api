@@ -12,7 +12,8 @@ switch (process.env.NODE_ENV) {
             smtpPort: process.env.SMTP_PORT, 
             smtpUser: process.env.MAILJET_API_KEY,
             smtpPass: process.env.MAILJET_API_SECRET,
-            host: `${process.env.HOST}:${this.port}`
+            host: `${process.env.HOST}:${this.port}`,
+            sessionSecret: process.env.SESSION_SECRET 
 
         }
     case 'development':
@@ -24,7 +25,8 @@ switch (process.env.NODE_ENV) {
             smtpPort: process.env.SMTP_PORT, 
             smtpUser: process.env.MAILJET_API_KEY,
             smtpPass: process.env.MAILJET_API_SECRET,
-            host: `http://localhost:${this.port}`
+            host: `http://localhost:${this.port}`,
+            sessionSecret: process.env.SESSION_SECRET
         }
     default:
         config = {
@@ -35,7 +37,8 @@ switch (process.env.NODE_ENV) {
             smtpPort: process.env.SMTP_PORT, 
             smtpUser: process.env.MAILJET_API_KEY,
             smtpPass: process.env.MAILJET_API_SECRET,
-            host: `http://localhost:${this.port}`
+            host: `http://localhost:${this.port}`,
+            sessionSecret: process.env.SESSION_SECRET
 
         }
 }

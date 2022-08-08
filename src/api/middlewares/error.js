@@ -1,5 +1,5 @@
 const {BadRequest} = require('http-errors')
-const logger = require('../utils/logger')
+const logger = require('../../config/logger')
 const errorHandler =  (err, req, res, next) => {
     logger.error(err)
 
