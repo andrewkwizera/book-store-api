@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
 const config = require('../config/index')
+const logger = require('../config/logger')
 
 function connectMongo() {
   mongoose
     .connect(config.mongoUri)
     .then((connection) => {
-      console.log("connected to mongodb database");
+     logger.info("connected to mongodb database");
     })
     .catch((error) => {
-      console.log(`unable to connect to database: ${error.message}`);
+     logger.info(`unable to connect to database: ${error.message}`);
     });
 }
 module.exports = { connectMongo };
