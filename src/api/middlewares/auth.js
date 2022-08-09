@@ -6,13 +6,9 @@ const User = require("../../models/users");
 // Protect routes
 const authenticate = async (req, res, next) => {
   if(!req.session || !req.session.user) throw new Unauthorized('user not logged in')
-  const user = await User.findOne({ _id: req.session.user.id });
-  if (!user) throw new Unauthorized("please login");
-  if(!user.active) throw new Unauthorized('activate your account first')
-  req.user = user 
+  req.user = req.session.user
   next()
 };
-
 
 const authorize = (...roles) => {
   return (req, res, next) => {

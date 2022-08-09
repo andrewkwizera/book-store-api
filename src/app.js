@@ -7,14 +7,14 @@ let RedisStore = require("connect-redis")(session)
 
 
 const config = require('./config/index')
-const { connectMongo } = require("./db/mongo");
+
 const {connectRedis} = require('./db/redis')
 const errorHandler = require("./api/middlewares/error");
 
 const bookRouter = require("./api/routes/books");
 const userRouter = require("./api/routes/users");
-/** These route conatins the health routes */
 const baseRouter = require('./api/routes/base')
+
 const app = express();
 
 app.use(express.json());
@@ -25,10 +25,10 @@ const swaggerDocument = YAML.load('api.yaml')
 
 
 /* sets ups swagger */
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
-connectMongo();
+
 const redisClient = connectRedis()
 redisClient.connect().then().catch(console.error)
 
@@ -36,15 +36,17 @@ redisClient.connect().then().catch(console.error)
 
 app.use(
   session({
-    secret: "my-secret",
+    secret: config.sessionSecret,
     store: new RedisStore({ client: redisClient }),
     resave: false,
     saveUninitialized: false,
   })
 );
 
-app.use("/api/v1/books", bookRouter);
-app.use("/api/v1/users", userRouter);
+app.use('/', baseRouter)
+
+app.use("/api/books", bookRouter);
+app.use("/api/users", userRouter);
 
 app.use(errorHandler);
 

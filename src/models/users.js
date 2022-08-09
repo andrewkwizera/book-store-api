@@ -1,13 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
-const WalletSchema = new mongoose.Schema({
-  balance: {
-    type: String,
-    default: 0,
-  },
-});
-
 const UserSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -43,13 +36,14 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+/**
+ * Hashes the plain text password anytime a change is made to the collection 
+ */
 UserSchema.pre('save', async function(next) {
   if (this.isModified('password')){
     const hash = await bcrypt.hash(this.password, 10)
     this.password = hash 
   }
-  
-  //hash the plain text password
   next() 
 })
 

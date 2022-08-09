@@ -6,7 +6,7 @@ const {authenticate, authorize} = require('../middlewares/auth')
 const router = express.Router({mergeParams:true});
 
 router.route('/auth/register').post(register)
-router.route('/auth/login').post(login)
+router.route('/').get(login)
 router.route('auth/initiate').post(initiatePasswordReset)
 router.route('auth/reset').post(resetPassword)
 router.route('auth/logout').post(logout)
