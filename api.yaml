@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  title: Kigali Public library API
+  description: >
+    An API that similuates Kigali Public Libary
+  version: 1.0.0
+
+paths:
+  /person:
+    put:
+      tags:
+        - Person
+      description: Creates a new person with the specified attributes
+      summary: Create person
+      operationId: createPerson
+      requestBody:
+        description: person
+        required: true
+        content:
+          application/json:
+            schema:
+              title: person
+              allOf:
+                - $ref: "#/components/schemas/person"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/person_id"
+                  - $ref: "#/components/schemas/person"
+
+  /person/{id}:
+    get:
+      tags:
+        - Person
+      description: Gets a specific person by ID
+      summary: Get person
+      operationId: fetchPerson
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/person_id"
+                  - $ref: "#/components/schemas/person"
