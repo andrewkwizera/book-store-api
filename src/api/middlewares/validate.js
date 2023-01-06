@@ -4,11 +4,11 @@ const {BadRequest} = require('http-errors')
 const validateCreateBook = async (req, res, next) => {
     try{
         const createBookSchema = Joi.object({
-            name: Joi.string().required(),
+            title: Joi.string().required(),
             author: Joi.string().required(),
             isbn: Joi.number().required(),
             category: Joi.string().required(),
-            copies:Joi.string(),
+            copies:Joi.number(),
             publisher: Joi.string()
         })
        await  createBookSchema.validateAsync(req.body)
@@ -17,6 +17,7 @@ const validateCreateBook = async (req, res, next) => {
         next(BadRequest(e.message))
     }
 }
+
 
 
 const validateUpdateBook = async (req, res, next) => {

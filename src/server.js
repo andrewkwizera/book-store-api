@@ -6,7 +6,7 @@ connectMongo()
 
 const server = app.listen(app.get('port'), () => {
 
-  logger.info(`${app.get('env')} server listening on port ${app.get('port')}`)
+  logger.info(`server listening on port ${app.get('port')}`)
 })
 
 process.on('SIGTERM', () => {

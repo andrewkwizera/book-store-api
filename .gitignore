@@ -1,0 +1,5 @@
+3 lines (3 sloc)  32 Bytes
+
+.env
+node_modules/
+/node_modules

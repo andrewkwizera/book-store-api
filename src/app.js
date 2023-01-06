@@ -25,7 +25,7 @@ const swaggerDocument = YAML.load('api.yaml')
 
 
 /* sets ups swagger */
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
 

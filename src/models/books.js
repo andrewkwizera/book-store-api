@@ -39,6 +39,7 @@ const BookSchema = new mongoose.Schema({
         default: 1
     },
 
+
     edition: {
         type: Number,
         default: 1
@@ -56,18 +57,13 @@ const BookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed
     },
 
-    admin: {
-        type: mongoose.Schema.Types.ObjectId,
-        required:true
-    },
-
     slug: String
 }, {
     timestamps: true
 })
 
 BookSchema.pre('save', function(next) {
-    this.slug = slugify(this.name, {
+    this.slug = slugify(this.title, {
         lower:true
     })
     next()
@@ -78,3 +74,4 @@ const Book = mongoose.model('Book', BookSchema)
 
 
 module.exports = Book
+

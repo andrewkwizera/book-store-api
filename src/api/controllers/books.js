@@ -13,7 +13,12 @@ const createBook = asyncHandler(async (req, res, next) => {
 
 async function getAllBooks(req, res, next) {
     try{
-    
+        const books = await Book.find({})
+        res.status(200).json({
+            success: true,
+            data: books
+
+        })
 
     }catch(e){
         next(e)

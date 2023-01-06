@@ -1,46 +1,133 @@
 openapi: 3.0.0
 info:
-  title: Kigali Public library API
+  title: Kigali Book Store API
   description: >
-    An API that similuates Kigali Public Libary
+    An API that similuates Kigali Book Store
   version: 1.0.0
 
+definitions:
+  users:
+    type: object
+    required:
+      - firstname
+      - lastname
+      - email
+      - password
+    properties:
+      firstname:
+        type: string
+      lastname: 
+        type: string
+      email:
+        type: string 
+      password:
+        type: string
+  users_login:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string 
+      password:
+        type: string
+  books:
+    type: object
+    required:
+      - title
+      - author
+      - isbn
+      - category
+      - publisher
+    properties:
+      title:
+        type: string 
+      author:
+        type: [string ]
+      isbn:
+        type: string 
+      category:
+        type: string 
+      publisher:
+        type: string        
 paths:
-  /person:
-    put:
+  /api/users:
+    post:
       tags:
-        - Person
-      description: Creates a new person with the specified attributes
-      summary: Create person
-      operationId: createPerson
+        - Users
+      summary: Create a User
       requestBody:
-        description: person
         required: true
         content:
           application/json:
             schema:
-              title: person
-              allOf:
-                - $ref: "#/components/schemas/person"
+              $ref: '#/definitions/users'
       responses:
-        "200":
-          description: OK
+        '201':
+          description: User was created!
+        '400':
+          description: Try again
+    
+    # patch:
+    #   tags:
+    #     - Users
+    #   summary: Update a user
+    #   parameters:
+    #     - in: path
+    #       name: _id
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/definitions/users'
+    #   responses:
+    #     '200':
+    #       description: User Updated Successfully
+    #     '400':
+    #       description: Bad request
+    #     '401':
+    #       description: Unauthorized
+
+  /api/users/auth/login:
+      post:
+        tags:
+          - User Login
+        summary: Login of the user
+        requestBody:
+          required: true
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/person_id"
-                  - $ref: "#/components/schemas/person"
-
-  /person/{id}:
+                $ref: '#/definitions/users_login'
+        responses:
+          '200':
+            description: Success
+          '401':
+            description: unauthorized
+  /api/books:
+    post:
+      tags:
+        - Books
+      summary: Create a Book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/books'
+      responses:
+        '201':
+          description: Book was created!
+        '400':
+          description: Try again
     get:
       tags:
-        - Person
-      description: Gets a specific person by ID
-      summary: Get person
-      operationId: fetchPerson
-      parameters:
-        - $ref: "#/components/parameters/id"
+        - Books
+      description: Gets all the books
+      summary: Get all books
+      operationId: fetchAllbooks
       responses:
         "200":
           description: OK
@@ -48,5 +135,29 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: "#/components/schemas/person_id"
-                  - $ref: "#/components/schemas/person"
+                  - $ref: "#/definitions/books"
+  /api/books/{_id}:
+    patch:
+      tags:
+        - Books
+      summary: Update a Book
+      parameters:
+        - in: path
+          name: _id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/books'
+      responses:
+        '200':
+          description: Book Updated Successfully
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized    
+               
+    
+
+  

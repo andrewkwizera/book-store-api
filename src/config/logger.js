@@ -11,7 +11,7 @@ const logger = createLogger({
         format.splat(),
         format.json()
     ),
-    defaultMeta: { service: 'kigali-public-libary-api' },
+    defaultMeta: { service: 'kigali-book-store-api' },
     transports: [
         new transports.Console({
             format: format.combine(

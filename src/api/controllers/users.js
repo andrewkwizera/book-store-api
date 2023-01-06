@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const logger = require('../../config/logger')
 
 const User = require('../../models/users')
-const Wallet = require('../../models/wallet')
 const {NotFound, BadRequest, Unauthorized} = require('http-errors')
 const asyncHandler = require('../middlewares/async')
 const {createUserActivationToken, checkUserActivationToken, createUserResetToken, checkUserResetToken} = require('../../services/auth')
@@ -22,6 +21,7 @@ const register = asyncHandler(async (req, res, next) => {
         }
     })
 })
+
 
 const activateUserAccount = asyncHandler(async (req, res, next) => {
     const activationToken = req.body.token ||req.params.token
